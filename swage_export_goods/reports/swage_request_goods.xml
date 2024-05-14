@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="swage_request_export_goods_template">
+        <t t-call="swage_export_goods.external_layout_pdf_goods">
+            <!-- <t t-foreach="docs" t-as="o">         -->
+                    <div class="page">
+
+
+
+
+                        <style type="text/css">
+                            @font-face {
+                            font-family:KacstLetter ;
+                            src: url(/swage_export_goods/static/fonts/KacstLetter.ttf);
+                            }
+                            h2 {font-family: KacstLetter;}
+                            td {font-family: KacstLetter;}
+                            th { font-family: KacstLetter;}
+                            h5 { font-family: KacstLetter;}
+                            h4 { font-family: KacstLetter;}
+                            p { font-family: KacstLetter;}
+                            span { font-family: KacstLetter;}
+                            h3 { font-family: KacstLetter;}
+                            div { font-family: KacstLetter;}
+                            th { font-family: KacstLetter;}
+
+
+
+    
+    
+                        </style>
+                        <center>
+                            <u>
+                                <h2 style="text-shadow:
+                                1px 1px 1px gray,
+                                2px 2px 1px gray;">طلـب تخـــــــــريج بضـــــائـع</h2>
+                            </u>
+                        </center>
+
+
+                        <style>
+                            .customers {
+                            font-family: Arial, Helvetica, sans-serif;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+
+                            .customers td, .customers th {
+                            border: 1px solid black;
+                            padding: 8px;
+                            }
+
+                            .customers tr:nth-child(even){background-color: #e7e6e6;}
+
+                            .customers tr:hover {background-color: black;}
+
+                            .customers th {
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            text-align: center;
+                            background-color: #e7e6e6;
+                            }
+
+                            .customers td {
+                              font-size:15px;
+                                }
+                        </style>
+
+                        <table class="customers">
+                            <thead>
+                                <tr  style="border:2px solid black; background-color:#e7e6e6;"> 
+                                    <th>اسم العميل</th>
+                                    <th>طلب</th>
+                                    <th>عدد الطرود </th>
+                                    <th>المدينة</th>
+                                    <th>نوع التوصيل</th>
+                                    <th>السائق</th>
+                                    <th>الفرع</th>
+                                    <th>رقم جوال</th>
+
+                                </tr>
+                            </thead>
+
+                            <t t-set="amount_total" t-value="0" />
+                            <t t-set="paid_amount_total" t-value="0" />
+                            <t t-set="total_blanace" t-value="0" />
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                   
+
+                                    <tr>
+                                        <td class="text-center">
+                                            <t t-esc="doc.partner_id.name" />
+
+                                        </td>
+
+                                        <td class="text-center">
+                                          
+                                            <t t-esc="doc.origin" />
+                                        </td>
+
+                                        <td class="text-center">
+                                            <t t-esc="doc.packages_number"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-esc="doc.partner_id.city" />
+
+                                        </td>
+
+                                        <td class="text-center">
+                                            <t t-esc="doc.picking_type_id.name" />
+                                        </td>
+
+                                        <td class="text-center">
+                                            
+                                            <t t-esc="doc.driver_id.name" />
+                                        </td>
+                                     
+                                        <td class="text-center">
+                                            <t t-esc="doc.custom_team_id.name" />
+                                        </td>
+
+                                        <td class="text-right">
+                                            <t t-esc="doc.partner_id.mobile" />
+
+                                        </td>
+      
+                                    </tr>
+
+                                </t>
+
+
+                               
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+        <!-- </t> -->
+    </t>
+
+    </template>
+
+
+    <template id="swage_request_export_goods">
+	    <t t-call="web.html_container">
+	            <t t-call="swage_export_goods.swage_request_export_goods_template"/>
+	    </t>
+	</template>
+
+
+   
+
+
+</odoo>

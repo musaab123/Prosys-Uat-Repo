@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    
+        <record id="action_report_swage_request_management" model="ir.actions.report">
+            <field name="name">طــلب تخــريج بضـائع</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">swage_export_goods.swage_request_export_goods</field>
+            <field name="report_file">swage_export_goods.swage_request_export_goods</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_type">report</field>
+    
+        </record>
+
+        </data>
+        </odoo>
