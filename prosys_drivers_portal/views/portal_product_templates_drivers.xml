@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="portal_my_home_driver_delivery" name="Show Driver Deliver Orders"
+      customize_show="True" inherit_id="portal.portal_my_home" priority="100">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="request.env.user.partner_id.is_driver">
+            <t t-call="portal.portal_docs_entry">
+               <t t-set="title">Drivers Delivery Orders</t>
+               <t t-set="url" t-value="'/my/delivery-orders'" />
+               <t t-set="placeholder_count" t-value="'drivers_count'" />
+            </t>
+         </t>
+      </xpath>
+   </template>
+
+   <template id="portal_my_home_menu_driver_delivery" inherit_id="portal.portal_breadcrumbs"
+      priority="30">
+      <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+         <li t-if="page_name in ['driver_delivery']"
+            t-attf-class="breadcrumb-item #{'active' if not driver_delivery else ''}">
+            Drivers Delivery Orders
+         </li>
+      </xpath>
+   </template>
+
+
+   <template id="portal_my_driver_delivery_list">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">Delivery Orders</t>
+         </t>
+         <t t-if="not grouped_deliveries">
+            <p>There are currently no Delivery Orders assigned in your account.</p>
+         </t>
+         <div class="mt16 mb16 ml2 mr2 text-right">
+            <div>
+            </div>
+         </div>
+         
+         <t t-if="grouped_deliveries">
+            <div class="js_picking_drivers_selector" >
+               <button type="button" id="picking_transit_val" class="btn btn-info w-30 ">Make it In-transit</button>
+               <br />
+               <t t-call="portal.portal_table">
+                  <thead>
+                     <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Customer Name</th>
+                        <th class="text-center">Customer phone</th>
+                        <th class="text-center">Scheduled Date</th>
+                        <th class="text-center">Source Document</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Driver Status</th>
+                     </tr>
+                  </thead>
+                  
+                  <tbody>
+                     <t t-set="i" t-value="1"/>
+                     <!-- <t t-set="tablelength" t-value="len(picking_list)"/> -->
+                     <input type="hidden" name="picking_length" id="picking_length" t-att-value="pickinglength"/>
+                     <t t-foreach="picking_list" t-as="orders">
+                        <tr id="salesmen_row">
+                           <td class="text-center">
+                              <input type="checkbox" t-att-name="'del_check['+str(i)+']'" t-att-id="'del_check['+str(i)+']'"/>
+                              <input type="hidden" t-att-name="'picking_id['+str(i)+']'" t-att-id="'picking_id['+str(i)+']'" t-att-value="orders.id"/>
+                           </td>
+                           <td class="text-left">
+                              <a t-attf-href="/my/delivery-orders/view/#{orders.id}">
+                                 <span t-field="orders.name" />
+                              </a>
+                           </td>
+                           <td class="text-left">
+                              <a t-attf-href="/my/delivery-orders/view/#{orders.id}">
+                                 <span t-field="orders.partner_id.name" />
+                              </a>
+                           </td>
+                           <td class="text-left">
+                              <span t-field="orders.partner_id.phone" />
+                           </td>
+                           <td class="text-left">
+                              <span t-field="orders.scheduled_date" />
+                           </td>
+                           <td class="text-left">
+                              <span t-field="orders.origin" />
+                           </td>
+                           <td class="text-left">
+                              <t t-if="orders.state == 'draft'">
+                                 Draft
+                              </t>
+                              <t t-if="orders.state == 'waiting'">
+                                 Waiting Another Operation
+                              </t>
+                              <t t-if="orders.state == 'confirmed'">
+                                 Confirmed
+                              </t>
+                              <t t-if="orders.state == 'assigned'">
+                                 Ready
+                              </t>
+                              <t t-if="orders.state == 'done'">
+                                 Done
+                              </t>
+                              <!-- <t t-if="orders.state == 'cancel'">
+                                 Cancelled
+                              </t> -->
+                           </td>
+                           <td class="text-left">
+                              <span t-field="orders.driver_status" />
+                           </td>
+                        </tr>
+                        <t t-set="i" t-value="i + 1"/>
+                     </t>
+                  </tbody>
+               </t>
+            </div>
+         </t>
+      </t>
+      
+   </template>
+
+   <!-- ############################## Picking Form ############################################ -->
+
+   <template id="portal_my_home_picking_delivery" inherit_id="portal.portal_breadcrumbs"
+      priority="30">
+      <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+         <li t-if="page_name in ['picking_details']"
+            t-attf-class="breadcrumb-item #{'active' if not picking_details else ''}">
+            <a href="/my/delivery-orders">Picking Orders</a>
+         </li>
+      </xpath>
+   </template>
+
+   <template id="portal_edit_in_picking_details">
+      <t t-call="portal.portal_layout">
+         <section id="features" class="py-5 mt-5">
+            <link rel="stylesheet" href="/prosys_drivers_portal/static/src/css/style.css" />
+            <link rel="stylesheet" href="/prosys_drivers_portal/static/src/css/style-nav.css" />
+            <!-- <div id="root" > -->
+
+               <!-- student profile Start -->
+               <form action="/driver/picking/submit" method="post" role="form"
+                  enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                  <input type="hidden" name="picking_id" id="picking_id" t-att-value="pickings.id" />
+                  <div class="row js_picking_drivers_selector">
+
+
+                     <div class="col-12 col-xl-12 mb-5">
+
+                        <div class="card mb-5">
+                           <div class="card-body">
+                              <div class="col-12 col-xl-8 " style="float: right;">
+
+
+                                 <nav>
+                                     <ol class="cd-multi-steps text-center">
+                                         <t t-if="pickings.driver_status == 'Assigned'">
+                                             <li class="current"><em> Assigned</em></li>
+                                             <li><em> In-Transit</em></li>
+                                             <li><em> Delivered</em></li>
+                                             <li><em> With Return</em></li>
+                                             <!-- <li><em> Cancelled</em></li> -->
+                                         </t>
+                                         <t t-elif="pickings.driver_status == 'In-Transit'">
+                                             <li><em> Assigned</em></li>
+                                             <li class="current"><em> In-Transit</em></li>
+                                             <li><em> Delivered</em></li>
+                                             <li><em> With Return</em></li>
+                                             <!-- <li><em> Cancelled</em></li> -->
+                                         </t>
+                                         <t t-elif="pickings.driver_status == 'Delivered'">
+                                             <li><em> Assigned</em></li>
+                                             <li><em> In-Transit</em></li>
+                                             <li class="current"><em> Delivered</em></li>
+                                             <li><em> With Return</em></li>
+                                             <!-- <li><em> Cancelled</em></li> -->
+                                         </t>
+                                         <t t-elif="pickings.driver_status == 'Delivered with Return'">
+                                             <li><em> Assigned</em></li>
+                                             <li><em> In-Transit</em></li>
+                                             <li><em> Delivered</em></li>
+                                             <li class="current"><em> With Return</em></li>
+                                             <!-- <li><em> Cancelled</em></li> -->
+                                          </t>
+                                          <!-- <t t-elif="pickings.driver_status == 'Cancelled'">
+                                             <li><em> Assigned</em></li>
+                                             <li><em> In-Transit</em></li>
+                                             <li><em> Delivered</em></li>
+                                             <li><em> With Return</em></li>
+                                             <li class="current"><em> Cancelled</em></li>
+                                          </t> -->
+                                     </ol>
+ 
+                                 </nav>
+ 
+ 
+                             </div>
+                              <h2 class="small-title"><t t-esc="pickings.name"/></h2>
+                              <!-- Breakpoint Specific Responsive Start -->
+                              <section style="margin-top:-150px;">
+
+
+                                 <div class="mb-3 row">
+                                    <t t-if="pickings.state == 'draft'">
+                                       
+                                       <!-- <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_cancelled_val"
+                                             class="btn btn-info w-100 ">Cancelled</button>
+                                       </div> -->
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <t t-if="pickings.driver_status != 'In-Transit'">
+                                             <button type="button" id="in_transit_btn_val"
+                                                class="btn btn-info w-100 ">In-transit</button>
+                                          </t>
+                                       </div>
+                                       <div class="col-sm-3 col-md-8 col-lg-8">
+                                          
+                                       </div>
+                                   </t>
+                                   <t t-elif="pickings.state == 'assigned'">
+                                       
+                                       
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_delivered_val"
+                                             class="btn btn-info w-100 ">Delivered In Full</button>
+                                       </div>
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_returned_val"
+                                             class="btn btn-info w-100 ">Return</button>
+                                       </div>
+                                       <!-- <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_cancelled_val"
+                                             class="btn btn-info w-100 ">Cancelled</button>
+                                       </div> -->
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <t t-if="pickings.driver_status != 'In-Transit'">
+                                             <button type="button" id="in_transit_btn_val"
+                                                class="btn btn-info w-100 ">In-transit</button>
+                                          </t>
+                                       </div>
+                                       <div class="col-sm-3 col-md-4 col-lg-4">
+                                          
+                                       </div>
+                                   </t>
+                                   <t t-elif="pickings.state == 'done'">
+                                    <t t-if="pickings.driver_status in ['In-Transit','Assigned']">
+                                       
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_delivered_val"
+                                             class="btn btn-info w-100 ">Delivered In Full</button>
+                                       </div>
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_returned_val"
+                                             class="btn btn-info w-100 ">Delivered With Return</button>
+                                       </div>
+                                       <!-- <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <button type="button" id="picking_cancelled_val"
+                                             class="btn btn-info w-100 ">Cancelled</button>
+                                       </div> -->
+                                       <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <t t-if="pickings.driver_status != 'In-Transit'">
+                                             <button type="button" id="in_transit_btn_val"
+                                                class="btn btn-info w-100 ">In-transit</button>
+                                          </t>
+                                       </div>
+                                       
+                                       <!-- <div class="col-sm-4 col-md-2 col-lg-2">
+                                          <t t-if="pickings.driver_status != 'Delivered with Return'">
+                                             <button type="button" id="picking_returned_val"
+                                             class="btn btn-info w-100 ">Return</button>
+                                          </t>                                          
+                                       </div> -->
+                                       <div class="col-sm-3 col-md-4 col-lg-4">
+                                          
+                                       </div>
+                                    </t>
+                                 </t>
+                                    <div id="CurrModal" class="pro_modal" style="display:none;">
+                                       <div class="pro_modal_content">
+                                          <table class="table table_shado" style="width:100%;" id="rt_product_details_table">
+                                             <thead>
+                                                <tr>
+                                                      <th scope="col" style="text-align:center;">Product</th>
+                                                      <th scope="col" style="text-align:center;">Quantity</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <t t-set="i" t-value="0" />
+                                                <t t-foreach="pickings.move_ids_without_package" t-as="moves">
+                                                   <tr>
+                                                   <td style="text-align:left;"><t t-esc="moves.product_id.name"/>
+                                                      <input type="hidden" t-att-name="'pro_id['+str(i)+']'" t-att-id="'pro_id['+str(i)+']'" t-att-value="moves.product_id.id" /></td>
+                                                   <td >
+                                                      <div class="integer-input" style="display: flex;align-items: center;">
+                                                         <button type="button" class="decrement" t-attf-qtyid="#{i}" style="width: 30px;height: 30px;background-color: #17a2b8;color: white;border: none;border-radius: 5px;cursor: pointer;" id="qty_decrement">-</button>
+                                                         <input type="number" t-att-value="int(moves.product_uom_qty)" class="input-field" style="width: 50px; text-align: center; margin: 0 5px;" t-att-name="'re_pro_qty['+str(i)+']'" t-att-id="'re_pro_qty['+str(i)+']'" />
+                                                         <button type="button" style="width: 30px;height: 30px;background-color: #17a2b8;color: white;border: none;border-radius: 5px;cursor: pointer;"  class="increment" t-attf-qtyid="#{i}" id="qty_increment">+</button>
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                                <t t-set="i" t-value="i + 1" />
+                                                </t>
+                                                
+                                                <input type="hidden" name="table_length" id="table_length" t-attf-value="#{i}" />
+                                             </tbody>
+                                          </table>
+                                          <button type="button" id="confirm_return_val"
+                                             class="btn btn-info w-30">Confirm Return</button>
+                                       </div>
+                                    </div>
+                                    <!-- <div class="col-sm-4 col-md-2 col-lg-2">
+                                       <button type="button" id="picking_delivered_val"
+                                          class="btn btn-info w-100 ">Delivered In Full</button>
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 col-lg-2">
+                                       <button type="button" id="picking_returned_val"
+                                          class="btn btn-info w-100 ">Return</button>
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 col-lg-2">
+                                       <button type="button" id="picking_cancelled_val"
+                                          class="btn btn-info w-100 ">Cancelled</button>
+                                    </div>
+                                    <div class="col-sm-3 col-md-6 col-lg-6">
+                                       
+                                    </div> -->
+                                 </div>
+
+                                 <div class="row ">
+                                    <div class="col-12 col-xl-6 mb-1">
+                                       <div class="mb-3 ">
+                                          <label class="form-label "> Customer Name:</label>
+
+                                          <select class="form-select" id="partner_id"
+                                             name="partner_id" disabled="disabled" aria-label="Default select example">
+                                                   <option t-att-value="pickings.partner_id.id">
+                                                      <t t-esc="pickings.partner_id.name" />
+                                                   </option>
+
+                                          </select>
+
+                                       </div>
+                                    </div>
+                                    <div class="col-12 col-xl-6 mb-1">
+                                       <div class="mb-3 ">
+                                          <label class="form-label ">Scheduled Date</label>
+
+                                          <input type="text" id="scheduled_date" name="scheduled_date"
+                                             class="form-control" readonly="True" t-att-value="str(pickings.scheduled_date).split('.')[0]"  />
+
+                                       </div>
+                                    </div>
+
+                                    <div class="table-responsive-sm mb-5 ">
+                                       
+                                       <table class="table table_shado" id="product_details_table">
+                                           <thead>
+                                               <tr>
+                                                   <th style="text-align:center;">Product</th>
+                                                   <th style="text-align:center;">Demand</th>
+                                                   <th style="text-align:center;">Reserved</th>
+                                                   <th style="text-align:center;">Done</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                             <t t-foreach="pickings.move_ids_without_package" t-as="moves">
+                                                <tr>
+                                                   <td style="text-align:left;"><t t-esc="moves.product_id.name"/></td>
+                                                   <td style="text-align:center;"><span t-esc="moves.product_uom_qty" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                                   <td style="text-align:center;"><span t-esc="moves.forecast_availability" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                                   <td style="text-align:center;"><t t-esc="moves.quantity_done" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                                </tr>
+                                             </t>
+                                           </tbody>
+                                       </table>
+
+                                   </div>
+
+
+                                   <!-- add chattttttttttttttttttttttttttttttttttttttttter -->
+
+                                   <div id="sale_order_communication" class="mt-4">
+                                    <h2>History</h2>
+                                    <t t-call="portal.message_thread"/>
+                                 </div>
+
+                                   <!-- <t t-call="portal.message_thread"/> -->
+
+<!-- 
+                                       <div class="d-flex">
+                                         
+                                          <div class="flex-grow-1">
+                                             <div class="o_portal_chatter_composer_input">
+                                                <div class="o_portal_chatter_composer_body mb32">
+                                                      <textarea rows="4" name="message" class="form-control" placeholder="Write a message..."></textarea>
+                                                      <div class="o_portal_chatter_attachments mt-3"/>
+                                                      <div class="mt8">
+                                                         <button t-attf-data-action="/mail/chatter_post" class="o_portal_chatter_composer_btn btn btn-primary" type="submit">Send</button>
+                                                         <button class="o_portal_chatter_attachment_btn btn btn-secondary" type="button" title="Add attachment">
+                                                            <i class="fa fa-paperclip"/>
+                                                         </button>
+                                                      </div>
+                                                </div>
+                                             </div>
+                                             <div class="d-none">
+                                                <input type="file" class="o_portal_chatter_file_input" multiple="multiple"/>
+                                             </div>
+                                          </div>
+                                    </div>
+
+
+
+                                    <t t-name="portal.Chatter.Attachments">
+                                       <div  class="row">
+                                           <div t-foreach="attachments" t-as="attachment" class="col-lg-2 col-md-3 col-sm-6">
+                                               <div class="o_portal_chatter_attachment mb-2 position-relative text-center" t-att-data-id="attachment.id">
+                                                   <button t-if="showDelete and attachment.state == 'pending'" class="o_portal_chatter_attachment_delete btn btn-sm btn-outline-danger" title="Delete">
+                                                       <i class="fa fa-times"/>
+                                                   </button>
+                                                   <a t-attf-href="/web/content/#{attachment.id}?download=true&amp;access_token=#{attachment.access_token}" target="_blank">
+                                                       <div class='oe_attachment_embedded o_image' t-att-title="attachment.name" t-att-data-mimetype="attachment.mimetype"/>
+                                                       <div class='o_portal_chatter_attachment_name'><t t-esc='attachment.name'/></div>
+                                                   </a>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </t> -->
+
+                                   <!-- add chattttttttttttttttttttttttttttttttttttttttter -->
+
+                                   
+
+
+                                 </div>
+
+
+
+
+                              </section>
+
+                              <!-- vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv -->
+
+
+
+                              
+
+                              <!-- Breakpoint Specific Responsive End -->
+                           </div>
+                        </div>
+                     </div>
+                     <!--  End -->
+
+
+                  </div>
+               </form>
+               <!--  End student profile Start -->
+
+
+            <!-- </div> -->
+
+         </section>
+      </t>
+      <!-- <script type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+      <script  src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+       -->
+   </template>
+</odoo>
