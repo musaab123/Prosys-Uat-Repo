@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <template id="external_layout_stock_picking_inherit">
+      <t t-if="o and 'company_id' in o">
+         <t t-set="company" t-value="o.company_id" />
+      </t>
+      <t t-if="not o or not 'company_id' in o">
+         <t t-set="company" t-value="res_company" />
+      </t>
+      <div class="header" />
+      <div class="article o_report_layout_standard">
+         <t t-raw="0" />
+      </div>
+      <div class="footer o_background_footer">
+         <div class="text-center" style="font-size:16px; color:black;">          
+         </div>
+      </div>
+   </template>
+   <template id="stock_picking_b_k3_report_custom">
+      <t t-call="swage.external_layout_stock_picking_inherit">
+         <t t-foreach="doc" t-as="o">
+            <div class="page">
+               <style type="text/css">@font-face {
+                     font-family:KacstLetter ;
+                     src: url(/swage/static/fonts/KacstLetter.ttf);
+                     }
+                     h2 {font-family: KacstLetter;}
+                     td {font-family: KacstLetter;}
+                     th { font-family: KacstLetter;}
+                     h5 { font-family: KacstLetter;}
+                     h4 { font-family: KacstLetter;}
+                     p { font-family: KacstLetter;}
+                     span { font-family: KacstLetter;}
+                     div { font-family: KacstLetter;}
+                  </style>
+                 
+
+                  <div class="row" > 
+                     <div class="col-12">
+                        <div style="display:block;">
+                           <center>
+                              <strong style="font-size:100px; font-weight: bold;">
+                                 <span class="m-0" t-field="o.partner_id.name" />
+                              
+                               </strong>
+                           </center>
+                           
+                        </div>
+                        <div style="border-bottom: 2px solid black;"></div>
+
+                        <div style="display:block;">
+                           <strong style="font-size:60px; font-weight: bold;">الجوال : 
+                             <!-- <span class="m-0" t-field="o.partner_id.mobile" /> -->
+                             <span t-esc="doc.partner_id.mobile and doc.partner_id.mobile.replace(' ', '').replace('.', '').replace('-', '') or ''" />
+        
+                           </strong>
+                        </div>
+
+
+
+                        <div style="display:block;">
+                           <!-- <strong style="font-size:60px; font-weight: bold;"> العنوان : </strong> -->
+
+                           <div style="display:block;">
+                              <strong style="font-size:60px; font-weight: bold;"> City : 
+                                <span class="m-0" t-field="o.partner_id.city" />
+                              </strong>
+                           </div>
+                        </div>
+
+                        <div style="border-bottom: 2px solid black;"></div>
+
+
+
+                        <div style="display:block;">
+                           <center>
+                           <strong style="font-size:60px; font-weight: bold;"> Order Number : 
+                             <span class="m-0" t-field="o.origin" />
+      
+                           </strong>
+                           </center>
+                        </div>
+
+                        <div style="display:block;">
+                           <center>
+                           <strong style="font-size:60px; font-weight: bold;"> الفرع : 
+                             <span class="m-0" t-field="o.team_id" />
+      
+                           </strong>
+                           </center>
+                        </div>
+
+
+                        <div style="display:block;">
+                           <center>
+
+                           <strong style="font-size:60px; font-weight: bold;"> packages Number : 
+                             <span class="m-0" t-field="o.packages_number" />
+        
+                           </strong>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
+               
+            
+            </div>
+         </t>
+         
+      </t>
+   </template>
+   <template id="prosys_swag_b_k1_report">
+      <t t-call="web.html_container">
+         <t t-foreach="docs" t-as="doc">
+            <t t-call="swage.stock_picking_b_k3_report_custom" />
+         </t>
+      </t>
+   </template>
+</odoo>

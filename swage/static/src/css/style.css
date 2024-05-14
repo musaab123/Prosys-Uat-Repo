@@ -1,0 +1,124 @@
+.font{
+  font-family:'traditional_arabic';;font-weight:100;font-size: 13px;
+  }
+  
+  @font-face {
+      font-family: 'DroidArabicKufiBold';
+      src: url('/orange_report/static/src/fonts/DroidKufi-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+        }
+  
+  @font-face {
+      font-family: 'DroidArabicKufiRegular';
+      src: url('/orange_report/static/src/fonts/DroidKufi-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+  
+  .arabic{
+      font-family:DroidArabicKufiRegular !important;
+      
+  
+  }
+
+
+/* .knk{
+  background-color:#ffd8b3;
+  font-family:DroidArabicKufiRegular !important;
+
+ 
+} */
+
+/* Apply styles to the entire table */
+.styled-table {
+border-collapse: collapse;
+width: 100%;
+margin: 0 auto;
+}
+
+/* Style table header cells */
+.styled-table th {
+background-color: #f2f2f2;
+padding: 15px;
+text-align: left;
+border: 1px solid #000;
+}
+
+/* Style table data cells */
+.styled-table td {
+padding: 15px;
+text-align: left;
+border: 1px solid #000;
+}
+
+/* Style spanned cells */
+.styled-table td[colspan] {
+background-color: #ffd8b3;
+}
+
+
+.knkk{
+background-color:#F58B0B;
+
+}
+
+.knc{
+  border: none !important;
+  
+}
+
+.child {
+
+  position: absolute;
+  /* top: -30%; */
+  left: 45%;
+  padding-top: 150px;
+}
+
+* {
+  font-family: sans-serif; /* Change your font family */
+}
+
+.content-table {
+  /* border-collapse: collapse; */
+  /* margin: 25px 0; */
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: #F58B0B;
+  color: #000;
+  /* text-align: left; */
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #000;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+.enx{
+  margin-right:60px !important;
+}
+

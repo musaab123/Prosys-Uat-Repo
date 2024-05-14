@@ -1,0 +1,91 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* swage
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e-20230727\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-04 15:30+0000\n"
+"PO-Revision-Date: 2024-03-04 15:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "<strong style=\"font-size:26px; font-weight: bold;\"> Address : </strong>"
+msgstr "العنوان :"
+
+#. module: swage
+#: model:ir.actions.report,name:swage.action_report_sale_ksa_company
+msgid "B/K Delivery  "
+msgstr "تقرير الطرود"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "City :"
+msgstr "المدينة :"
+
+#. module: swage
+#: model:ir.model.fields,field_description:swage.field_stock_picking__date_creation
+msgid "Created Date"
+msgstr "تاريخ الانشاء"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "Customer Name :"
+msgstr "اسم العميل :"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "Delivery Number :"
+msgstr "رقم الصرف :"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "Logo"
+msgstr "الشعار"
+
+#. module: swage
+#: model:ir.model.fields,field_description:swage.field_stock_picking__packages_number
+msgid "Number of packages"
+msgstr "عدد الطرود :"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "Order Number :"
+msgstr "رقم الطلب :"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "Sale Team :"
+msgstr "الفرع :"
+
+#. module: swage
+#: model:ir.model.fields,field_description:swage.field_stock_picking__sale_id
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: swage
+#: model:ir.model.fields,field_description:swage.field_stock_picking__team_id
+msgid "Sales Team"
+msgstr "الفرع :"
+
+#. module: swage
+#: model:ir.model,name:swage.model_stock_picking
+msgid "Transfer"
+msgstr "الشحنة"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "country :"
+msgstr "الدولة :"
+
+#. module: swage
+#: model_terms:ir.ui.view,arch_db:swage.stock_picking_b_k3_report_custom
+msgid "packages Number :"
+msgstr "عدد الطرود :"
