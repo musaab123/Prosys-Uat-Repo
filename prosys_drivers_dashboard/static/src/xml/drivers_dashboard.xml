@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="DriversDashboardMain">
+        <div class="oh_dashboards">
+            <div class="container-fluid o_drivers_dashboard">
+            </div>
+        </div>
+    </t>
+    <t t-name="LoginDriverDetails">
+        <link rel="stylesheet"
+              href="/prosys_drivers_dashboard/static/src/css/drivers_dashboard.css"/>
+        <div class="row">
+            <div class="col-md-1 col-sm-1 dummy"></div>
+            
+            <div class="col-md-2 col-sm-6 assigned_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">Assigned Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['assigned_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- new status unassigned orders -->
+            <div class="col-md-2 col-sm-6 unassigned_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">Unassigned Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['unassigned_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new status unassigned orders -->
+
+
+
+            <div class="col-md-2 col-sm-6 in_transit_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">In-Transit Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['transit_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6 delivered_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">Delivered Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['delivered_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6 delivered_return_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">Returned Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['returned_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-2 col-sm-6 cancelled_deliveries oh-payslip">
+                <div class="oh-card">
+                    <div class="oh-card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon"><i class="fa fa-truck"/></div>
+                            <div class="stat-content">
+                                <div class="stat-text">Cancelled Orders</div>
+                                <div class="stat-digit"><t t-esc="widget.delivery_orders_counts['cancelled_count']"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </t>
+    <t t-name="EmployeeWarning">
+        <div>
+            <p>Error : Could not find employee linked to user</p>
+            <p>Please contact system admin for the setup</p>
+        </div>
+    </t>
+</templates>
