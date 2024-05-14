@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_assign_driver_form" model="ir.ui.view">
+            <field name="name">wizard.assign.driver.form</field>
+            <field name="model">wizard.assign.driver</field>
+            <field name="arch" type="xml">
+                <form string="Assign Driver">
+                    <sheet>
+                        <group >
+                            <field name="driver_id" domain="[('is_driver','=',True)]" required="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_assign_driver" string="Assign" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="wizard_assign_driver_action" model="ir.actions.act_window">
+            <field name="name">Assign Driver</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.assign.driver</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_assign_driver_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>
