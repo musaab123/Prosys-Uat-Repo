@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="external_layout_pdf_goods">
+        <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"/>  
+        </t>
+
+        
+        <div class="header" style=" direction: initial;">
+
+            <style type="text/css">
+                @font-face {
+                font-family:KacstLetter ;
+                src: url(/swage_export_goods/static/fonts/KacstLetter.ttf);
+                }
+                h2 {font-family: KacstLetter;}
+                td {font-family: KacstLetter;}
+                th { font-family: KacstLetter;}
+                h5 { font-family: KacstLetter;}
+                h4 { font-family: KacstLetter;}
+                p { font-family: KacstLetter;}
+                span { font-family: KacstLetter;}
+                h3 { font-family: KacstLetter;}
+                div { font-family: KacstLetter;}
+                strong { font-family: KacstLetter;}
+
+
+                
+
+
+
+
+            </style>
+            <div class="row  justify-content-between" style="border: 1px solid black; border-radius: 5px;">
+                <div class="col-4 p-2">
+                    <span class="text-right arabic" style="display: inline-block; font-size: 15px;
+                    text-shadow:
+                    1px 1px 1px gray,
+                    2px 2px 1px gray;
+                    font-weight: bold;" t-field="company.name"></span>
+
+                </div>
+                <div class="col-4 text-center"> <!-- Added text-center class here -->
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height: 100px; width: 100px; margin-top: 12px;" alt="Logo"/>
+
+                </div>
+                <div class="col-4  p-2" style="margin-left: 40px;">
+                    <span class="text-left arabic" style="display: inline-block; font-size: 20px; 
+                    font-weight: bold; 
+                    text-shadow:
+                    1px 1px 1px gray,
+                    2px 2px 1px gray;" t-field="company.arabic_name"></span>
+                </div>
+
+                
+
+            </div>
+            
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-raw="0" />
+        </div>
+        <div class="footer o_background_footer">
+            <div class="text-center" style="font-size:14px;"  >
+                <div style="border: 1px solid black;"></div>
+                <div class="w-100 row justify-content-between" >
+
+                    <style type="text/css">
+                        @font-face {
+                        font-family:KacstLetter ;
+                        src: url(/swage_export_goods/static/fonts/KacstLetter.ttf);
+                        }
+                        h2 {font-family: KacstLetter;}
+                        td {font-family: KacstLetter;}
+                        th { font-family: KacstLetter;}
+                        h5 { font-family: KacstLetter;}
+                        h4 { font-family: KacstLetter;}
+                        p { font-family: KacstLetter;}
+                        span { font-family: KacstLetter;}
+                        h3 { font-family: KacstLetter;}
+                        div { font-family: KacstLetter;}
+                        strong { font-family: KacstLetter;}
+            
+                    </style>
+                          
+                       <div class="col-6 text-start" style="display:block;  color:black;">
+                        <strong style="font-size:10px;">  طبع بواسطة :</strong>
+                        <span class="m-0" t-field="user.name" />
+                       
+                       </div>
+                       
+                       <div class="col-6 text-end" style="display:block; color:black;">
+                          <strong style="font-size:10px;">  تاريخ التقرير :</strong>
+                        <span t-field="res_company.date_creation" />
+
+                       </div>
+   
+               </div>
+                <!-- <div t-field="company.report_footer"/> -->
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+   
+
+</odoo>
