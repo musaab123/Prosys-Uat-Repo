@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_driver_inherit_form" model="ir.ui.view">
+        <field name="name">res.partner.inherit.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_driver" />
+                <field name="driver_user_id" attrs="{'invisible': [('is_driver', '=', False)],'required': [('is_driver', '=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_stock_picking_tree_confirm_cus23" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="is_driver_confirm" optional="show"/>
+                
+             </field>
+
+         </field>
+     </record>
+
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="action_stock_move_change_confirm_id">
+           <field name="name">Update Driver Confirm</field>
+           <field name="model_id" ref="stock.model_stock_picking"/>
+           <field name="binding_model_id" ref="stock.model_stock_picking"/>
+           <field name = "binding_view_types" >list, form</field>
+           <field name="state">code</field>
+           <field name="code">
+               action = records.action_update_stock_confirm()
+           </field>
+        </record>
+
+
+        <record id="change_driver_confirm_wizard_form" model="ir.ui.view">
+        <field name="name">wizard.confirm.driver.form</field>
+        <field name="model">wizard.confirm.driver</field>
+            <field name="arch" type="xml">
+                <form string="Set Driver Confirm">
+                    <sheet>
+                        <group>
+                            <group >
+                                <field name="is_driver_confirm"/>
+                            </group>
+
+                            <!-- <group >
+                                <field name="driver_status" />
+                            </group> -->
+
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_confirm_driver" string="Set Prepair" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_change_confirm_wizard" model="ir.actions.act_window">
+             <field name="name">Set Prepair</field>
+             <field name="res_model">wizard.confirm.driver</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="view_mode">tree,form</field>
+             <field name="view_id" ref="change_driver_confirm_wizard_form"/>
+             <field name="target">new</field>
+       </record>
+
+    </data>
+</odoo>
