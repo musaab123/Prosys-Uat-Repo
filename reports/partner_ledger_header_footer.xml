@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="external_layout_pdf_ledger">
+        <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"/>  
+        </t>
+
+        
+        <div class="header" style=" direction: initial;">
+
+            <style type="text/css">
+                @font-face {
+                font-family:KacstLetter ;
+                src: url(/bi_partner_ledger_report/static/fonts/KacstLetter.ttf);
+                }
+                h2 {font-family: KacstLetter;}
+                td {font-family: KacstLetter;}
+                th { font-family: KacstLetter;}
+                h5 { font-family: KacstLetter;}
+                h4 { font-family: KacstLetter;}
+                p { font-family: KacstLetter;}
+                span { font-family: KacstLetter;}
+                h3 { font-family: KacstLetter;}
+                div { font-family: KacstLetter;}
+
+    
+    
+    
+            </style>
+            <div class="row  justify-content-between" style="border: 1px solid black; border-radius: 5px;">
+                <div class="col-4 p-2">
+                    <span class="text-right arabic" style="display: inline-block; font-size: 15px; font-weight: bold;" t-field="res_company.name"></span>
+                </div>
+                <div class="col-4 text-center"> <!-- Added text-center class here -->
+                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="height: 100px; width: 100px; margin-top: 12px;" alt="Logo"/>
+                    <br></br>
+                    <!-- <span>كشف حساب اجمالي - مطابقة الرصيد</span>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br> -->
+                    <!-- <span>كشف حساب اجمالي - مطابقة الرصيد</span> -->
+                 
+               
+             
+
+
+
+
+                </div>
+                <div class="col-4 text-end p-2">
+                    <span class="text-right arabic" style="display: inline-block; font-size: 20px; font-weight: bold;" t-field="res_company.arabic_name"></span>
+                </div>
+
+                
+
+            </div>
+            
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-raw="0" />
+        </div>
+        <div class="footer o_background_footer">
+            <div class="text-center" style="font-size:14px;"  >
+                <div style="border: 1px solid black;"></div>
+                <div class="w-100 row justify-content-between" >
+                          
+                       <div class="col-6 text-start" style="display:block;  color:black;">
+                        <span class="m-0" t-field="user.name" />
+                          <strong style="font-size:10px;">  : طبع بواسطة  
+   
+                          </strong>
+                       </div>
+                       
+                       <div class="col-6 text-end" style="display:block; color:black;">
+                        <span t-field="res_company.date_creation" />
+
+                          <strong style="font-size:10px;"> : تاريخ التقرير  
+   
+       
+                          </strong>
+                       </div>
+   
+               </div>
+                <!-- <div t-field="company.report_footer"/> -->
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+   
+
+</odoo>
